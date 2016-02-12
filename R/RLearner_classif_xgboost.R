@@ -26,8 +26,8 @@ makeRLearner.classif.xgboost = function() {
       makeIntegerLearnerParam(id = "nthread", default = 16,lower = 1),
       makeIntegerLearnerParam(id = "nrounds", default = 1, lower = 1),
       makeUntypedLearnerParam(id = "feval", default = NULL),
-      makeIntegerLearnerParam(id = "verbose", default = 2, lower = 0, upper = 2),
-      makeIntegerLearnerParam(id = "print.every.n", default = 1, lower = 1),
+      makeIntegerLearnerParam(id = "verbose", default = 2, lower = 0, upper = 2, tunable = FALSE),
+      makeIntegerLearnerParam(id = "print.every.n", default = 1, lower = 1, tunable = FALSE),
       makeIntegerLearnerParam(id = "early.stop.round", default = 1, lower = 1),
       makeLogicalLearnerParam(id = "maximize", default = TRUE)
     ),
@@ -55,10 +55,10 @@ trainLearner.classif.xgboost = function(.learner, .task, .subset, .weights = NUL
     }
 
     if (is.null(.weights)) {
-      xgboost::xgboost(data = data, label = target, objective = obj, ...)
+      xgboost::xgboost(data = data, label = target, objective = obj, num_class = 2,  ...)
     } else {
       xgb.dmat = xgboost::xgb.DMatrix(data = data, label = target, weight = .weights)
-      xgboost::xgboost(data = xgb.dmat, label = NULL, objective = obj, ...)
+      xgboost::xgboost(data = xgb.dmat, label = NULL, objective = obj, numc_class = 2, ...)
     }
   } else {
     parlist = list(...)
@@ -83,12 +83,18 @@ predictLearner.classif.xgboost = function(.learner, .model, .newdata, ...) {
   m = .model$learner.model
   p = xgboost::predict(m, newdata = data.matrix(.newdata), ...)
   nc = length(td$class.levels)
-
   if (nc == 2L) {
-    y = matrix(0, ncol = 2, nrow = nrow(.newdata))
-    colnames(y) = td$class.levels
-    y[, 1L] = 1-p
-    y[, 2L] = p
+    # multi:softprob strangely returns an unstructured vector. the xgboost docs might say otherwise
+    # i guess we should report this, but the code below works and fixes this
+    if (.learner$par.vals$objective == "multi:softprob") {
+       y = matrix(p, ncol = 2L, byrow = TRUE)
+       colnames(y) = td$class.levels
+    } else {
+      y = matrix(0, ncol = 2, nrow = nrow(.newdata))
+      colnames(y) = td$class.levels
+      y[, 1L] = 1-p
+      y[, 2L] = p
+    }
     if (.learner$predict.type == "prob") {
       return(y)
     } else {
