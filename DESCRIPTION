@@ -85,6 +85,7 @@ Suggests:
     glmnet,
     h2o (>= 3.6.0.8),
     Hmisc,
+    ipred,
     irace (>= 1.0.7),
     kernlab,
     kknn,

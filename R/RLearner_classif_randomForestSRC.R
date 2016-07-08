@@ -38,10 +38,12 @@ makeRLearner.classif.randomForestSRC = function() {
       makeLogicalLearnerParam(id = "do.trace", default = FALSE, tunable = FALSE, when = "both"), # is currently ignored
       makeLogicalLearnerParam(id = "membership", default = TRUE, tunable = FALSE),
       makeLogicalLearnerParam(id = "statistics", default = FALSE, tunable = FALSE),
-      makeLogicalLearnerParam(id = "tree.err", default = FALSE, tunable = FALSE)
+      makeLogicalLearnerParam(id = "tree.err", default = FALSE, tunable = FALSE),
+makeLogicalLearnerParam(id = "fast.restore", default = FALSE, tunable = FALSE)
     ),
     par.vals = list(na.action = "na.impute"),
-    properties = c("missings", "numerics", "factors", "ordered", "prob", "twoclass", "multiclass", "weights"),
+    properties = c("missings", "numerics", "factors", "ordered", "prob", "twoclass", "multiclass", "weights",
+	"featimp"),
     name = "Random Forest",
     short.name = "rfsrc",
     note = '`na.action` has been set to `"na.impute"` by default to allow missing data support.'
@@ -62,4 +64,11 @@ predictLearner.classif.randomForestSRC = function(.learner, .model, .newdata, ..
   } else {
     return(p$class)
   }
+}
+
+getFeatureImportance.classif.randomForestSRC = function(.learner, .model, ...) {
+  mod = getLearnerModel(.model)
+  fiv = as.numeric(randomForestSRC::vimp(mod)$importance[, "all"])
+  names(fiv) = .model$features
+  return(fiv)
 }
