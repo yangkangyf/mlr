@@ -69,3 +69,12 @@ predictLearner.classif.gbm = function(.learner, .model, .newdata, ...) {
     }
   }
 }
+
+getFeatureImportance.classif.gbm = function(.learner, .model, n.trees, ...) {
+  mod = getLearnerModel(.model)
+  if (missing(n.trees))
+      n.trees = mod$n.trees
+  fiv = as.numeric(gbm::relative.influence(mod, n.trees, ...))
+  names(fiv) = .model$features
+  return(fiv)
+}
