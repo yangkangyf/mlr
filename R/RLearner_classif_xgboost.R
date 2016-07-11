@@ -33,7 +33,7 @@ makeRLearner.classif.xgboost = function() {
       makeLogicalLearnerParam(id = "maximize", default = TRUE)
     ),
     par.vals = list(nrounds = 1),
-    properties = c("twoclass", "multiclass", "numerics", "factors", "prob", "weights"),
+    properties = c("twoclass", "multiclass", "numerics", "factors", "prob", "weights", "featimp"),
     name = "eXtreme Gradient Boosting",
     short.name = "xgboost",
     note = "All settings are passed directly, rather than through `xgboost`'s `params` argument. `nrounds` has been set to `1` by default. `num_class` is set internally, so do not set this manually."
@@ -112,3 +112,16 @@ predictLearner.classif.xgboost = function(.learner, .model, .newdata, ...) {
     }
   }
 }
+
+
+getFeatureImportance.classif.xgboost = function(.learner, .model, ...) {
+  mod = getLearnerModel(.model)
+  imp = xgboost::xgb.importance(feature_names = .model$features,
+                                model = mod, ...)
+  
+  fiv = imp$Gain
+  names(fiv) = imp$Feature
+  return(fiv)
+}
+
+
