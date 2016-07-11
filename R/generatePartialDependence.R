@@ -212,7 +212,7 @@ generatePartialDependenceData = function(obj, input, features,
     if (!is.numeric(test))
       stop("fun argument must return a numeric vector")
     if (td$type == "classif" & obj$learner$predict.type == "response" & length(test) != 3L)
-      stop("function argument must return a numeric vector with length equal to the number of target class levels.")
+      stop("If learner predict.type != prob, then the fun argument must return a numeric vector with length equal to the number of target class levels.")
     if (td$type == "classif" & obj$learner$predict.type == "prob" & length(test) != 1L)
       stop("function argument must return a numeric vector of length 1.")
     if (td$type == "regr" & !(length(test) %in% c(1L, 3L)))
@@ -493,13 +493,11 @@ plotPartialDependence = function(obj, geom = "line", facet = NULL, facet.wrap.nr
       stop("obj argument created by generatePartialDependenceData must be called with two or three features to use this argument!")
     if (!obj$interaction)
       stop("obj argument created by generatePartialDependenceData must be called with interaction = TRUE to use this argument!")
-    if (!(is.factor(obj$data[[facet]]) | is.integer(obj$data[[facet]])))
-      stop("The feature set as the facetting variable must be an integer or a factor.")
     
     features = obj$features[which(obj$features != facet)]
     
-    if (!is.factor(data[[facet]]))
-      obj$data[[facet]] = stri_paste(facet, "=", as.factor(signif(obj$data[[facet]], 0)), sep = " ")
+    if (!is.factor(obj$data[[facet]]))
+      obj$data[[facet]] = stri_paste(facet, "=", as.factor(obj$data[[facet]]), sep = " ")
     else
       obj$data[[facet]] = stri_paste(facet, "=", obj$data[[facet]], sep = " ")
     
