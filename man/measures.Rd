@@ -5,18 +5,17 @@
 \alias{G1}
 \alias{G2}
 \alias{acc}
-\alias{accmult}
 \alias{arsq}
 \alias{auc}
 \alias{bac}
 \alias{ber}
 \alias{brier}
+\alias{brier.scaled}
 \alias{cindex}
 \alias{db}
 \alias{dunn}
 \alias{expvar}
 \alias{f1}
-\alias{f1mult}
 \alias{fdr}
 \alias{featperc}
 \alias{fn}
@@ -25,19 +24,17 @@
 \alias{fpr}
 \alias{gmean}
 \alias{gpr}
-\alias{hamloss}
 \alias{logloss}
 \alias{mae}
 \alias{mcc}
 \alias{mcp}
 \alias{meancosts}
 \alias{measureACC}
-\alias{measureACCMULT}
 \alias{measureAUC}
 \alias{measureBAC}
 \alias{measureBrier}
+\alias{measureBrierScaled}
 \alias{measureEXPVAR}
-\alias{measureF1MULT}
 \alias{measureFDR}
 \alias{measureFN}
 \alias{measureFNR}
@@ -45,7 +42,6 @@
 \alias{measureFPR}
 \alias{measureGMEAN}
 \alias{measureGPR}
-\alias{measureHAMLOSS}
 \alias{measureLogloss}
 \alias{measureMAE}
 \alias{measureMCC}
@@ -53,16 +49,19 @@
 \alias{measureMEDSE}
 \alias{measureMMCE}
 \alias{measureMSE}
+\alias{measureMultiLabelF1}
 \alias{measureMulticlassBrier}
+\alias{measureMultilabelACC}
+\alias{measureMultilabelHamloss}
+\alias{measureMultilabelPPV}
+\alias{measureMultilabelSubset01}
+\alias{measureMultilabelTPR}
 \alias{measureNPV}
 \alias{measurePPV}
-\alias{measurePRECMULT}
-\alias{measureRECALLMULT}
 \alias{measureRMSE}
 \alias{measureRSQ}
 \alias{measureSAE}
 \alias{measureSSE}
-\alias{measureSUBSET01}
 \alias{measureTN}
 \alias{measureTNR}
 \alias{measureTP}
@@ -74,16 +73,19 @@
 \alias{mse}
 \alias{multiclass.auc}
 \alias{multiclass.brier}
+\alias{multilabel.acc}
+\alias{multilabel.f1}
+\alias{multilabel.hamloss}
+\alias{multilabel.ppv}
+\alias{multilabel.subset01}
+\alias{multilabel.tpr}
 \alias{npv}
 \alias{ppv}
-\alias{precmult}
-\alias{recallmult}
 \alias{rmse}
 \alias{rsq}
 \alias{sae}
 \alias{silhouette}
 \alias{sse}
-\alias{subset01}
 \alias{timeboth}
 \alias{timepredict}
 \alias{timetrain}
@@ -168,6 +170,10 @@ brier
 
 measureBrier(probabilities, truth, negative, positive)
 
+brier.scaled
+
+measureBrierScaled(probabilities, truth, negative, positive)
+
 bac
 
 measureBAC(truth, response, negative, positive)
@@ -230,29 +236,29 @@ gpr
 
 measureGPR(truth, response, positive)
 
-hamloss
+multilabel.hamloss
 
-measureHAMLOSS(truth, response)
+measureMultilabelHamloss(truth, response)
 
-subset01
+multilabel.subset01
 
-measureSUBSET01(truth, response)
+measureMultilabelSubset01(truth, response)
 
-f1mult
+multilabel.f1
 
-measureF1MULT(truth, response)
+measureMultiLabelF1(truth, response)
 
-accmult
+multilabel.acc
 
-measureACCMULT(truth, response)
+measureMultilabelACC(truth, response)
 
-precmult
+multilabel.ppv
 
-measurePRECMULT(truth, response)
+measureMultilabelPPV(truth, response)
 
-recallmult
+multilabel.tpr
 
-measureRECALLMULT(truth, response)
+measureMultilabelTPR(truth, response)
 
 cindex
 
