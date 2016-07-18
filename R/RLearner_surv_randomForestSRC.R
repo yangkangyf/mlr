@@ -60,6 +60,8 @@ predictLearner.surv.randomForestSRC = function(.learner, .model, .newdata, ...) 
   predict(.model$learner.model, newdata = .newdata, membership = FALSE, ...)$predicted
 }
 
+#' @export
+#' @rdname getFeatureImportanceLearner
 getFeatureImportance.surv.randomForestSRC = function(.learner, .model, ...) {
   mod = getLearnerModel(.model)
   fiv = as.numeric(randomForestSRC::vimp(mod)$importance)
