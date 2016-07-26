@@ -39,6 +39,11 @@ getLearnerProperties.Learner = function(learner) {
   learner$properties
 }
 
+#' @export
+getLearnerProperties.character = function(learner) {
+  getLearnerProperties(checkLearner(learner))
+}
+
 #' @rdname LearnerProperties
 #' @export
 hasLearnerProperties = function(learner, props) {
